@@ -36,12 +36,12 @@
 
 ## Future Roadmap 🚀
 
-### Step 6: Desktop Application (The "Stationary" Terminal)
-- **Goal:** Convert the current web-based SPA into a standalone desktop application.
-- [ ] **Scaffold Electron/Tauri:** Choose a framework to wrap the React frontend.
-- [ ] **Local Process Management:** Ensure the FastAPI backend starts/stops automatically with the desktop app.
-- [ ] **Native Integration:** Implement desktop-specific features (e.g., local system file dialogs for data export).
-- [ ] **Packaging:** Create installers for macOS/Windows.
+### Step 6: Multi-Platform Deployment (Web + Desktop)
+- **Goal:** Maintain the current web-based SPA while adding a standalone desktop terminal version.
+- [ ] **Unified Codebase Strategy:** Ensure the React + FastAPI architecture supports both cloud/server deployment and local desktop execution.
+- [ ] **Desktop Wrapper (Electron/Tauri):** Package the frontend into a native desktop container.
+- [ ] **Local Sidecar Management:** Implement logic for the desktop app to manage its own local FastAPI "sidecar" process.
+- [ ] **CI/CD for Both Targets:** Setup automated builds for the web URL and desktop installers (macOS/Windows).
 
 ### Step 7: Advanced Modules (GrayScale Roadmap)
 - [ ] **MRI Module:** Computer Vision interface for joint scan analysis.
