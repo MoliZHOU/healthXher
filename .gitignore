@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.env
+
+# Databases & Sensitive Data
+*.db
+*.db-journal
+*.sqlite
+ra_prediction.db
+.gemini/
+
+# ML Artifacts (Local Caches)
+*.pkl
+app/core/model_cache.pkl
+python/model_cache.pkl
+app/core/model_features.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/build.log
+
+# Project specific
+data/
+doc/
+.pytest_cache/
