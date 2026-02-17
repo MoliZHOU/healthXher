@@ -62,41 +62,42 @@ DOM_FEATURE_WEIGHTS: dict[str, float] = {
     # Demographic Risk Factors / 人口学危险因素
     "Age":                    3.5,   # RA peak onset 40-60 / 40-60岁高发
     "Gender":                 3.5,   # Female risk is 2-3x higher / 女性风险更高
-    "Family History":         3.5,
 
     # Metabolic & Comorbidities / 代谢与合并症
     "BMI":                    3.0,
-    "Postpartum_12m":         5.0,
-    "MenopauseStatus":         4.5,
-    # "Hypertension":           2.5,
-    # "Diabetes":               2.5,
-    # "Hyperlipidemia":         2.0,
+    "Hypertension":           2.5,
+    "Diabetes":               2.5,
+    "Hyperlipidemia":         2.0,
 
     # Modifiable Risk Factors / 可改变危险因素
     "SmokingStatus":          4.0,   # Strongest modifiable factor / 最强可改变因素
+  
+    # Lifestyle / 生活方式
+    "PhysicalActivity":       2.0,
+    "DrinkingStatus":         1.5,
+    "FiberConsumption":       2.5,   # Microbiome-immune axis / 肠道菌群-免疫轴
 
-    # Symtom 
+    # Socio-economic / 社会经济因素
+    "Race":                   0,
+    "EducationLevel":         0,
+    "MaritalStatus":          0,
+    "FamilyIncome":           0,
+
+    # Dietary Intake / 饮食摄入
+    "CalorieConsumption":     1.5,
+    "ProteinConsumption":     2.0,
+    "CarbohydrateConsumption":1.5,
+    "FatConsumption":         1.5,
+    "CaffeineConsumption":    1.0,
+
+    # ADDED
+    "Family History":         3.5,
+    "Postpartum_12m":         5.0,
+    "MenopauseStatus":         4.5,
     "MorningStiffnessLong":      4.5,
     "SymptomsDuration6Weeks":    4.0,
     "SmallJointSymmetry":        5.0
   
-    # Lifestyle / 生活方式
-    # "PhysicalActivity":       2.0,
-    # "DrinkingStatus":         1.5,
-    # "FiberConsumption":       2.5,   # Microbiome-immune axis / 肠道菌群-免疫轴
-
-    # # Socio-economic / 社会经济因素
-    # "Race":                   2.0,
-    # "EducationLevel":         1.5,
-    # "MaritalStatus":          1.0,
-    # "FamilyIncome":           1.5,
-
-    # # Dietary Intake / 饮食摄入
-    # "CalorieConsumption":     1.5,
-    # "ProteinConsumption":     2.0,
-    # "CarbohydrateConsumption":1.5,
-    # "FatConsumption":         1.5,
-    # "CaffeineConsumption":    1.0,
 }
 
 # ── 0-B  Monotonic Constraints / 单调性约束 ───────────────────────────────
@@ -110,8 +111,8 @@ MONOTONIC_CONSTRAINTS: dict[str, int] = {
     "DII":              1,   # Higher DII = more pro-inflammatory / DII越高越致炎
     "NLR":              1,   # Higher NLR = systemic inflammation / NLR越高代表系统性炎症
     "BMI":              1,   # BMI increases risk / BMI增加风险
-    # "FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
-    # "PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
+    "FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
+    "PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
     # ______ADDED______
     "SmokingStatus":          1,   
     "FamilyHistory":          1,
