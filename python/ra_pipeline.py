@@ -62,33 +62,41 @@ DOM_FEATURE_WEIGHTS: dict[str, float] = {
     # Demographic Risk Factors / 人口学危险因素
     "Age":                    3.5,   # RA peak onset 40-60 / 40-60岁高发
     "Gender":                 3.5,   # Female risk is 2-3x higher / 女性风险更高
+    "Family History":         3.5,
 
     # Metabolic & Comorbidities / 代谢与合并症
     "BMI":                    3.0,
-    "Hypertension":           2.5,
-    "Diabetes":               2.5,
-    "Hyperlipidemia":         2.0,
+    "Postpartum_12m":         5.0,
+    "MenopauseStatus":         4.5,
+    # "Hypertension":           2.5,
+    # "Diabetes":               2.5,
+    # "Hyperlipidemia":         2.0,
 
     # Modifiable Risk Factors / 可改变危险因素
     "SmokingStatus":          4.0,   # Strongest modifiable factor / 最强可改变因素
 
+    # Symtom 
+    "MorningStiffnessLong":      4.5,
+    "SymptomsDuration6Weeks":    4.0,
+    "SmallJointSymmetry":        5.0
+  
     # Lifestyle / 生活方式
-    "PhysicalActivity":       2.0,
-    "DrinkingStatus":         1.5,
-    "FiberConsumption":       2.5,   # Microbiome-immune axis / 肠道菌群-免疫轴
+    # "PhysicalActivity":       2.0,
+    # "DrinkingStatus":         1.5,
+    # "FiberConsumption":       2.5,   # Microbiome-immune axis / 肠道菌群-免疫轴
 
-    # Socio-economic / 社会经济因素
-    "Race":                   2.0,
-    "EducationLevel":         1.5,
-    "MaritalStatus":          1.0,
-    "FamilyIncome":           1.5,
+    # # Socio-economic / 社会经济因素
+    # "Race":                   2.0,
+    # "EducationLevel":         1.5,
+    # "MaritalStatus":          1.0,
+    # "FamilyIncome":           1.5,
 
-    # Dietary Intake / 饮食摄入
-    "CalorieConsumption":     1.5,
-    "ProteinConsumption":     2.0,
-    "CarbohydrateConsumption":1.5,
-    "FatConsumption":         1.5,
-    "CaffeineConsumption":    1.0,
+    # # Dietary Intake / 饮食摄入
+    # "CalorieConsumption":     1.5,
+    # "ProteinConsumption":     2.0,
+    # "CarbohydrateConsumption":1.5,
+    # "FatConsumption":         1.5,
+    # "CaffeineConsumption":    1.0,
 }
 
 # ── 0-B  Monotonic Constraints / 单调性约束 ───────────────────────────────
@@ -102,25 +110,51 @@ MONOTONIC_CONSTRAINTS: dict[str, int] = {
     "DII":              1,   # Higher DII = more pro-inflammatory / DII越高越致炎
     "NLR":              1,   # Higher NLR = systemic inflammation / NLR越高代表系统性炎症
     "BMI":              1,   # BMI increases risk / BMI增加风险
-    "FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
-    "PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
+    # "FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
+    # "PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
+    # ______ADDED______
+    "SmokingStatus":          1,   
+    "FamilyHistory":          1,
+    "SmallJointSymmetry":     1,   
+    "MorningStiffnessLong":   1,   
+    "SymptomsDuration6Weeks": 1,
+    "Postpartum_12m":         1,   
+    "MenopauseStatus":        1,
 }
 
 # ── 0-C  Interaction Constraints / 交互约束 ────────────────────────────────
 # Defines feature groups allowed to interact within a single tree
 # 定义允许在同一棵树中交互的特征组
+# INTERACTION_GROUPS: list[list[str]] = [
+#     # Group 1: Inflammatory Biomarkers / 炎症生物标志物
+#     ["BRI", "BRI_Trend", "NLR", "DII", "BMI"],
+#     # Group 2: Demographics & Social / 人口学与社会因素
+#     ["Age", "Gender", "Race", "EducationLevel", "FamilyIncome"],
+#     # Group 3: Lifestyle / 生活方式
+#     ["SmokingStatus", "PhysicalActivity", "DrinkingStatus",
+#      "FiberConsumption", "CalorieConsumption"],
+#     # Group 4: Comorbidities / 合并症
+#     ["Hypertension", "Diabetes", "Hyperlipidemia"],
+#     # Cross-group interaction (Age x Gender x Smoking) / 跨组交互 (年龄 x 性别 x 吸烟)
+#     ["SmokingStatus", "Age", "Gender"],
+# ]
+
 INTERACTION_GROUPS: list[list[str]] = [
-    # Group 1: Inflammatory Biomarkers / 炎症生物标志物
+    # Group 1: Inflammatory Profile (代谢与炎症指标的关联)
     ["BRI", "BRI_Trend", "NLR", "DII", "BMI"],
-    # Group 2: Demographics & Social / 人口学与社会因素
-    ["Age", "Gender", "Race", "EducationLevel", "FamilyIncome"],
-    # Group 3: Lifestyle / 生活方式
-    ["SmokingStatus", "PhysicalActivity", "DrinkingStatus",
-     "FiberConsumption", "CalorieConsumption"],
-    # Group 4: Comorbidities / 合并症
-    ["Hypertension", "Diabetes", "Hyperlipidemia"],
-    # Cross-group interaction (Age x Gender x Smoking) / 跨组交互 (年龄 x 性别 x 吸烟)
-    ["SmokingStatus", "Age", "Gender"],
+
+    # Group 2: The "Hormonal Trigger" (最关键：生命周期与性别)
+    ["Postpartum_12m", "MenopauseStatus", "Gender", "Age"],
+
+    # Group 3: Clinical RA Signature (诊断核心：对称性、时长与晨僵的协同)
+    ["SmallJointSymmetry", "MorningStiffnessLong", "SymptomsDuration6Weeks"],
+
+    # Group 4: Risk Intensifiers (外部诱因与遗传背景)
+    ["SmokingStatus", "FamilyHistory"],
+
+    # Cross-group Interaction: Hormonal Stage x Clinical Symptoms
+    # (论文核心：当处于产后期时，关节症状的权重会因激素波动而产生非线性增长)
+    ["Postpartum_12m", "SmallJointSymmetry", "MorningStiffnessLong"],
 ]
 
 # ── 0-D  Global Configuration / 全局配置 ──────────────────────────────────
