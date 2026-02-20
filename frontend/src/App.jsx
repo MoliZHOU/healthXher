@@ -10,6 +10,10 @@ const PrivateRoute = ({ children }) => {
 };
 
 function App() {
+  if (!localStorage.getItem('token')) {
+    localStorage.setItem('token', 'dev');
+  }
+
   return (
     <Router>
       <Routes>

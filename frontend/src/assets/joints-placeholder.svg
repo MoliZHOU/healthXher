@@ -1,0 +1,24 @@
+<svg width="640" height="420" viewBox="0 0 640 420" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" fill="#f8fafc"/>
+  <g stroke="#cbd5f5" stroke-width="2" fill="none">
+    <path d="M320 50 C300 80 300 130 320 160 C340 130 340 80 320 50 Z"/>
+    <path d="M320 160 L320 260"/>
+    <path d="M320 260 L280 340"/>
+    <path d="M320 260 L360 340"/>
+    <path d="M320 190 L240 210"/>
+    <path d="M320 190 L400 210"/>
+  </g>
+  <g fill="#94a3b8">
+    <circle cx="320" cy="50" r="8"/>
+    <circle cx="320" cy="160" r="7"/>
+    <circle cx="320" cy="260" r="7"/>
+    <circle cx="280" cy="340" r="7"/>
+    <circle cx="360" cy="340" r="7"/>
+    <circle cx="240" cy="210" r="7"/>
+    <circle cx="400" cy="210" r="7"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="14" fill="#64748b">
+    <text x="24" y="34">Joint Map (Placeholder)</text>
+    <text x="24" y="58">Click to set pain & swelling</text>
+  </g>
+</svg>
