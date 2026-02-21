@@ -53,50 +53,28 @@ np.random.seed(42)
 # Based on: Literature evidence + Pathophysiological mechanisms
 # 范围：1.0（低）→ 5.0（强临床相关性）；依据：文献证据 + 病理生理机制
 DOM_FEATURE_WEIGHTS: dict[str, float] = {
-    # Core Inflammatory Markers / 核心炎症指标
-    "BRI":                    4.5,   # Visceral adiposity proxy / 内脏脂肪代理指标
-    "BRI_Trend":              3.5,   # Dynamic BRI trend / BRI 动态趋势
-    "NLR":                    4.0,   # Neutrophil-to-Lymphocyte Ratio / 中性粒/淋巴比
-    "DII":                    4.5,   # Dietary Inflammatory Index / 饮食炎症指数
+    # === Group 1: ACR/EULAR Clinical Presentation (核心临床症状) ===
+    "SmallJointSymmetry":      5.0,  # [Interactive Model] Boolean: Whether joint involvement is symmetrical
+    "MorningStiffnessLong":    4.5,  # [Dashboard Input] Number: Duration of morning stiffness in minutes
+    "SymptomsDuration6Weeks":  4.0,  # [Dashboard Input] Boolean: If symptoms have persisted for >= 6 weeks
+    "SwelleingJoints":         4.0,  # [Interactive Model] Integer: Count of swollen joints selected by user
+    "PainJoints":              4.0,  # [Interactive Model] Integer: Count of swollen joints selected by user
+    "FeverInLast6Month":        3.5,    #[Dashboard Input] Number
+    
+    # === Group 2: Hormonal & Genetic Context (荷尔蒙窗口与遗传背景) ===
+    "Postpartum_12m":          5.0,  # [Questionnaire] Boolean
+    "MenopauseStatus":         4.5,  # [Questionnaire] Boolean
+    "Family History":          3.5,  #[Questionnaire] Boolean
 
-    # Demographic Risk Factors / 人口学危险因素
-    "Age":                    3.5,   # RA peak onset 40-60 / 40-60岁高发
-    "Gender":                 3.5,   # Female risk is 2-3x higher / 女性风险更高
+    # === Group 3: Systematic Inflammatory & Metabolic Markers (全身性指标) ===
+    "BRI":                     4.5,  # [Calculated] Float
+    "BMI":                     3.0,  # [Calculated] Float
+    "SmokingStatus":           4.0,  # [Questionnaire] Categorical
 
-    # Metabolic & Comorbidities / 代谢与合并症
-    "BMI":                    3.0,
-    "Hypertension":           2.5,
-    "Diabetes":               2.5,
-    "Hyperlipidemia":         2.0,
+    # === Group 4: Demographics (基础人口学特征) ===
+    "Age":                     3.5,  #[Dashboard Input] Number
+    "Gender":                  3.5,  # [Questionnaire] Boolean ？
 
-    # Modifiable Risk Factors / 可改变危险因素
-    "SmokingStatus":          4.0,   # Strongest modifiable factor / 最强可改变因素
-  
-    # Lifestyle / 生活方式
-    "PhysicalActivity":       2.0,
-    "DrinkingStatus":         1.5,
-    "FiberConsumption":       2.5,   # Microbiome-immune axis / 肠道菌群-免疫轴
-
-    # Socio-economic / 社会经济因素
-    "Race":                   0,
-    "EducationLevel":         0,
-    "MaritalStatus":          0,
-    "FamilyIncome":           0,
-
-    # Dietary Intake / 饮食摄入
-    "CalorieConsumption":     1.5,
-    "ProteinConsumption":     2.0,
-    "CarbohydrateConsumption":1.5,
-    "FatConsumption":         1.5,
-    "CaffeineConsumption":    1.0,
-
-    # ADDED
-    "Family History":         3.5,
-    "Postpartum_12m":         5.0,
-    "MenopauseStatus":         4.5,
-    "MorningStiffnessLong":      4.5,
-    "SymptomsDuration6Weeks":    4.0,
-    "SmallJointSymmetry":        5.0
   
 }
 
@@ -107,12 +85,12 @@ DOM_FEATURE_WEIGHTS: dict[str, float] = {
 MONOTONIC_CONSTRAINTS: dict[str, int] = {
     "Age":              1,   # Age increases risk / 年龄增加风险
     "BRI":              1,   # Adiposity increases inflammation / 肥胖增加炎症
-    "BRI_Trend":        1,   # Deteriorating trend increases risk / 恶化趋势增加风险
-    "DII":              1,   # Higher DII = more pro-inflammatory / DII越高越致炎
-    "NLR":              1,   # Higher NLR = systemic inflammation / NLR越高代表系统性炎症
+    #"BRI_Trend":        1,   # Deteriorating trend increases risk / 恶化趋势增加风险
+    #"DII":              1,   # Higher DII = more pro-inflammatory / DII越高越致炎
+    #"NLR":              1,   # Higher NLR = systemic inflammation / NLR越高代表系统性炎症
     "BMI":              1,   # BMI increases risk / BMI增加风险
-    "FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
-    "PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
+    #"FiberConsumption": -1,  # Fiber is protective / 膳食纤维具有保护作用
+    #"PhysicalActivity": 0,   # Non-linear relationship / 非线性关系
     # ______ADDED______
     "SmokingStatus":          1,   
     "FamilyHistory":          1,
@@ -121,6 +99,9 @@ MONOTONIC_CONSTRAINTS: dict[str, int] = {
     "SymptomsDuration6Weeks": 1,
     "Postpartum_12m":         1,   
     "MenopauseStatus":        1,
+    "SwelleingJoints":        1,
+    "PainJoints":             1,
+    "FeverInLast6Month":      1,
 }
 
 # ── 0-C  Interaction Constraints / 交互约束 ────────────────────────────────

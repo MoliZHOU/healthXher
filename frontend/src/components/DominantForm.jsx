@@ -18,6 +18,15 @@ const schema = z.object({
   diabetes: z.enum(['Normal', 'Diabetes']),
   hyperlipidemia: z.enum(['Normal', 'Hyperlipidemia']),
   bmi: z.number().optional().nullable(),
+
+  // ADDED：
+  postpartum_12m: z.boolean(),
+  family_history: z.boolean(),
+  small_joint_symmetry: z.boolean(),
+  MenopauseStatus: z.boolean(),
+  MorningStiffnessLong: z.boolean(),
+  SymptomsDuration6Weeks: z.boolean(),
+ 
 });
 
 const DominantForm = ({ onSubmit, isLoading }) => {
@@ -30,6 +39,10 @@ const DominantForm = ({ onSubmit, isLoading }) => {
       diabetes: 'Normal',
       hyperlipidemia: 'Normal',
       bmi: null,
+      // ADDED
+      postpartum_12m: false,
+      family_history: false,
+      small_joint_symmetry: false,
     }
   });
 
@@ -86,6 +99,48 @@ const DominantForm = ({ onSubmit, isLoading }) => {
               <label className="block text-sm font-medium text-slate-700">Lymphocytes</label>
               <input type="number" step="0.01" {...register('lymphocytes', { valueAsNumber: true })} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
               {errors.lymphocytes && <p className="text-red-500 text-xs mt-1">{errors.lymphocytes.message}</p>}
+            </div>
+          </div>
+        </div>
+
+        {/* RA Clinical Markers & Hormonal Context */}
+        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-xl border border-slate-200 mt-6">
+          
+          {/* Group A: Clinical Symptoms (高权重症状) */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-bold text-indigo-900 uppercase tracking-wider">Clinical Presentation</h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('SmallJointSymmetry')} className="h-4 w-4 text-indigo-600" />
+                <label className="text-sm text-slate-700">Small Joint Symmetry </label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('MorningStiffnessLong')} className="h-4 w-4 text-indigo-600" />
+                <label className="text-sm text-slate-700">Morning Stiffness > 60 min</label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('SymptomsDuration6Weeks')} className="h-4 w-4 text-indigo-600" />
+                <label className="text-sm text-slate-700">Duration ≥ 6 Weeks </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Group B: Bio-Background*/}
+          <div className="space-y-4 border-l pl-6 border-slate-200">
+            <h3 className="text-sm font-bold text-pink-700 uppercase tracking-wider">Physiological Context</h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('Postpartum_12m')} className="h-4 w-4 text-pink-600" />
+                <label className="text-sm text-slate-700">Postpartum (Last 12 Months)</label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('MenopauseStatus')} className="h-4 w-4 text-pink-600" />
+                <label className="text-sm text-slate-700">Menopause </label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input type="checkbox" {...register('Family History')} className="h-4 w-4 text-slate-600" />
+                <label className="text-sm text-slate-700">Family History</label>
+              </div>
             </div>
           </div>
         </div>
