@@ -23,6 +23,7 @@ const Login = () => {
         }
       });
       localStorage.setItem('token', response.data.access_token);
+      localStorage.setItem('username', data.username);
       window.location.href = '/';
     } catch (err) {
       setError('Invalid username or password');
