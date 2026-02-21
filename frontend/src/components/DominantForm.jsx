@@ -20,7 +20,7 @@ const schema = z.object({
   bmi: z.number().optional().nullable(),
 });
 
-const DominantForm = ({ onSubmit, isLoading }) => {
+const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -34,7 +34,10 @@ const DominantForm = ({ onSubmit, isLoading }) => {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={`space-y-6 bg-white p-8 rounded-xl shadow-lg border border-slate-200 ${className}`}
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Demographics */}
         <div className="space-y-4">
