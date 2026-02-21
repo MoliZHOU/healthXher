@@ -39,8 +39,8 @@ const mockPredict = (data) => {
     (data.hypertension === 'Hypertension' ? 0.08 : 0) +
     (data.diabetes === 'Diabetes' ? 0.08 : 0) +
     (data.hyperlipidemia === 'Hyperlipidemia' ? 0.06 : 0);
-  const painScore = (data.joint_pain ?? 0) / 100 * 0.12;
-  const swellingScore = (data.joint_swelling ?? 0) / 100 * 0.12;
+  const painScore = (data.joint_pain ?? 0) / 10 * 0.12;
+  const swellingScore = (data.joint_swelling ?? 0) / 10 * 0.12;
 
   const probability = clamp01(
     0.08 +
@@ -94,7 +94,7 @@ const JointPainSwellingModal = ({ open, onClose, joint, scores, onChange }) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const x = clamp01((event.clientX - rect.left) / rect.width);
-    const value = Math.round(x * 100);
+    const value = Math.round(x * 10);
     if (type === 'pain') {
       onChange({ pain: value, swelling });
     } else {
@@ -117,8 +117,8 @@ const JointPainSwellingModal = ({ open, onClose, joint, scores, onChange }) => {
     setDragging(null);
   };
 
-  const painPos = `${clamp01(pain / 100) * 100}%`;
-  const swellingPos = `${clamp01(swelling / 100) * 100}%`;
+  const painPos = `${clamp01(pain / 10) * 100}%`;
+  const swellingPos = `${clamp01(swelling / 10) * 100}%`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-6">
@@ -316,7 +316,7 @@ const Dashboard = () => {
     }
     const pain = score?.pain ?? 0;
     const swelling = score?.swelling ?? 0;
-    const intensity = clamp01((pain + swelling) / 200);
+    const intensity = clamp01((pain + swelling) / 20);
     return {
       boxShadow: `0 0 0 6px rgba(239, 68, 68, ${0.12 + intensity * 0.35})`
     };
@@ -381,17 +381,35 @@ const Dashboard = () => {
     lymphocytes: 'Lymphocytes',
     fiber_consumption: 'Fiber (g/day)',
     physical_activity: 'Physical Activity',
-    drinking_status: 'Drinking Status'
+    drinking_status: 'Drinking Status',
+    small_joint_symmetry: 'Small Joint Symmetry',
+    MorningStiffnessLong: 'Morning Stiffness > 60 min',
+    SymptomsDuration6Weeks: 'Duration >= 6 Weeks',
+    postpartum_12m: 'Postpartum (Last 12 Months)',
+    MenopauseStatus: 'Menopause',
+    family_history: 'Family History'
   };
   const reportGroups = [
     { title: 'Demographics', fields: ['age', 'gender', 'smoking_status'] },
     { title: 'Biometrics', fields: ['waist_cm', 'height_cm', 'neutrophils', 'lymphocytes'] },
-    { title: 'Lifestyle & Health', fields: ['fiber_consumption', 'physical_activity', 'drinking_status'] }
+    { title: 'Lifestyle & Health', fields: ['fiber_consumption', 'physical_activity', 'drinking_status'] },
+    { title: 'Clinical Presentation', fields: ['small_joint_symmetry', 'MorningStiffnessLong', 'SymptomsDuration6Weeks'] },
+    { title: 'Physiological Context', fields: ['postpartum_12m', 'MenopauseStatus', 'family_history'] }
   ];
+  const reportAliases = {
+    small_joint_symmetry: 'SmallJointSymmetry',
+    postpartum_12m: 'Postpartum_12m',
+    family_history: 'Family History'
+  };
   const getReportValue = (key) => {
-    const value = lastSubmittedData ? lastSubmittedData[key] : undefined;
-    if (value === null || value === undefined || value === '') return 'N/A';
-    return value;
+    if (!lastSubmittedData) return 'N/A';
+    const directValue = lastSubmittedData[key];
+    const resolvedValue = (directValue === null || directValue === undefined || directValue === '')
+      ? lastSubmittedData[reportAliases[key]]
+      : directValue;
+    if (resolvedValue === null || resolvedValue === undefined || resolvedValue === '') return 'N/A';
+    if (typeof resolvedValue === 'boolean') return resolvedValue ? 'Yes' : 'No';
+    return resolvedValue;
   };
   const reportValues = Object.fromEntries(
     Object.keys(reportFieldLabels).map((key) => [key, getReportValue(key)])

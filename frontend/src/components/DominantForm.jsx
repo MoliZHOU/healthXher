@@ -119,7 +119,7 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
               </div>
               <div className="flex items-center space-x-3">
                 <input type="checkbox" {...register('MorningStiffnessLong')} className="h-4 w-4 text-indigo-600" />
-                <label className="text-sm text-slate-700">Morning Stiffness > 60 min</label>
+                  <label className="text-sm text-slate-700">Morning Stiffness &gt; 60 min</label>
               </div>
               <div className="flex items-center space-x-3">
                 <input type="checkbox" {...register('SymptomsDuration6Weeks')} className="h-4 w-4 text-indigo-600" />

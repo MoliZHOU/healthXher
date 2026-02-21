@@ -21,6 +21,8 @@ export const buildReportHtml = ({
     return sideJoints.map((joint) => {
       const pain = jointScores[joint.id]?.pain ?? 0;
       const swelling = jointScores[joint.id]?.swelling ?? 0;
+      const painPercent = Math.max(0, Math.min(10, pain)) * 10;
+      const swellingPercent = Math.max(0, Math.min(10, swelling)) * 10;
       return `
         <div class="joint-item">
           <div class="joint-top">
@@ -29,11 +31,11 @@ export const buildReportHtml = ({
           <div class="bars">
             <div class="bar-wrap">
               <div class="bar-label"><span>Pain</span></div>
-              <div class="bar"><div class="fill" style="width:${pain}%"></div></div>
+              <div class="bar"><div class="fill" style="width:${painPercent}%"></div></div>
             </div>
             <div class="bar-wrap">
               <div class="bar-label"><span>Swelling</span></div>
-              <div class="bar"><div class="fill orange" style="width:${swelling}%"></div></div>
+              <div class="bar"><div class="fill orange" style="width:${swellingPercent}%"></div></div>
             </div>
           </div>
         </div>
@@ -448,6 +450,32 @@ export const buildReportHtml = ({
                   </tbody>
                 </table>
               </div>
+
+              <div style="height:10px;"></div>
+
+              <div class="t">
+                <table>
+                  <thead>
+                    <tr><th colspan="2">Clinical Presentation</th></tr>
+                  </thead>
+                  <tbody>
+                    ${renderReportRows(reportGroups[3].fields)}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="height:10px;"></div>
+
+              <div class="t">
+                <table>
+                  <thead>
+                    <tr><th colspan="2">Physiological Context</th></tr>
+                  </thead>
+                  <tbody>
+                    ${renderReportRows(reportGroups[4].fields)}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -455,7 +483,7 @@ export const buildReportHtml = ({
         <div class="card section avoid-break">
           <div class="card-head">
             <h2 class="card-title">Joint Scores</h2>
-            <p class="card-note">Pain &amp; Swelling (0–100)</p>
+            <p class="card-note">Pain &amp; Swelling (0–10)</p>
           </div>
           <div class="card-body">
             <div class="joint-list">
