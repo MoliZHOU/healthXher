@@ -174,6 +174,18 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
           </div>
         </div>
       </div>
+      <div className="mt-6 mb-4 flex items-start space-x-3">
+        <input 
+          type="checkbox" 
+          id="data-consent"
+          className="h-4 w-4 mt-0.5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer" 
+        />
+        <label htmlFor="data-consent" className="text-xs text-slate-500 leading-normal cursor-pointer">
+          I consent to the collection and anonymized analysis of my health data.(Optional: You can still analyze your profile without checking this box)
+        </label>
+      </div>
+
+
 
       <button
         type="submit"
