@@ -29,7 +29,7 @@ const schema = z.object({
  
 });
 
-const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
+const DominantForm = ({ onSubmit, isLoading, className = '', onUseOldVersion = () => {} }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -46,11 +46,34 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
     }
   });
 
+  const [language, setLanguage] = React.useState('English');
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={`space-y-6 bg-white p-8 rounded-xl shadow-lg border border-slate-200 ${className}`}
     >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <label className="text-sm font-medium text-slate-700">Language</label>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="text-sm rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          >
+            <option value="English">English</option>
+            <option value="Swedish">Swedish</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <button
+          type="button"
+          onClick={onUseOldVersion}
+          className="inline-flex items-center justify-center text-base md:text-lg font-semibold text-indigo-700 hover:text-indigo-900 px-4 py-2 rounded-lg border border-indigo-200 bg-indigo-50 hover:bg-indigo-100 shadow-sm"
+        >
+          Accessible Mode
+        </button>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Demographics */}
         <div className="space-y-4">
@@ -76,9 +99,61 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
             </select>
           </div>
         </div>
-
-        {/* Biometrics */}
+        {/* Biometrics Section */}
         <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Biometrics</h3>
+          
+          {/* 第一行：Waist 和 Height */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700">Waist (cm)</label>
+              <input type="number" step="0.1" {...register('waist_cm', { valueAsNumber: true })} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              {errors.waist_cm && <p className="text-red-500 text-xs mt-1">{errors.waist_cm.message}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700">Height (cm)</label>
+              <input type="number" step="0.1" {...register('height_cm', { valueAsNumber: true })} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
+              {errors.height_cm && <p className="text-red-500 text-xs mt-1">{errors.height_cm.message}</p>}
+            </div>
+          </div>
+
+          {/* Group C: Lab Results (Optional) - 移出上面的 grid 独立成行 */}
+          <div className="mt-6 border-t pt-4 border-slate-200">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-bold text-indigo-700 uppercase tracking-wider">
+                Blood Test Results <span className="text-xs font-normal text-slate-400 lowercase">(Optional)</span>
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-lg">
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">Neutrophils (10⁹/L)</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  placeholder="e.g. 4.5"
+                  {...register('neutrophils', { valueAsNumber: true })} 
+                  className="block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" 
+                />
+                {errors.neutrophils && <p className="text-red-500 text-[10px] mt-1">{errors.neutrophils.message}</p>}
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1">Lymphocytes (10⁹/L)</label>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  placeholder="e.g. 1.5"
+                  {...register('lymphocytes', { valueAsNumber: true })} 
+                  className="block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" 
+                />
+                {errors.lymphocytes && <p className="text-red-500 text-[10px] mt-1">{errors.lymphocytes.message}</p>}
+              </div>
+            </div>
+          </div>
+        </div>  
+        
+        {/* <div className="space-y-4">
           <h3 className="text-lg font-semibold text-slate-800 border-b pb-2">Biometrics</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -93,7 +168,7 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-slate-700">Neutrophils</label>
               <input type="number" step="0.01" {...register('neutrophils', { valueAsNumber: true })} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
               {errors.neutrophils && <p className="text-red-500 text-xs mt-1">{errors.neutrophils.message}</p>}
@@ -102,9 +177,10 @@ const DominantForm = ({ onSubmit, isLoading, className = '' }) => {
               <label className="block text-sm font-medium text-slate-700">Lymphocytes</label>
               <input type="number" step="0.01" {...register('lymphocytes', { valueAsNumber: true })} className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" />
               {errors.lymphocytes && <p className="text-red-500 text-xs mt-1">{errors.lymphocytes.message}</p>}
-            </div>
-          </div>
-        </div>
+            </div> */}
+            
+            {/* Group C: Lab Results (Optional) */}
+
 
         {/* RA Clinical Markers & Hormonal Context */}
         <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-xl border border-slate-200 mt-6">
