@@ -6,7 +6,7 @@
 
 AuraRA empowers healthcare professionals and researchers by providing a reliable tool for early RA detection and personalized risk management. 
 
-By combining cutting-edge machine learning with comprehensive health survey data, our product acts as an intelligent decision-support system. It automatically evaluates clinical inputs and enforces strict biological constraints using "BioMatic Logic"—ensuring that predictions are not only accurate but also clinically meaningful and logically sound.
+By combining cutting-edge machine learning with comprehensive health survey data, our product acts as an intelligent decision-support system. It automatically evaluates clinical inputs and enforces strict biological constraints using "BioMatic Logic", ensuring that predictions are not only accurate but also clinically meaningful and logically sound.
 
 ### Key Features
 - **Predictive Risk Modeling**: Leverages models trained on NHANES (National Health and Nutrition Examination Survey) data.
