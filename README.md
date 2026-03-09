@@ -1,6 +1,28 @@
-# healthXher: RA Prediction & Management System
+# healthXher Hackathon: RA Prediction & Management System
 
-healthXher is a clinical-grade medical inference engine designed to predict and manage Rheumatoid Arthritis (RA) risk. It utilizes machine learning models trained on NHANES (National Health and Nutrition Examination Survey) data and enforces biological constraints through "BioMatic Logic."
+> **AuraRA** is an advanced, clinical-grade medical inference engine dedicated to the prediction, risk assessment, and management of Rheumatoid Arthritis (RA).
+
+## 💡 About the Project & Product
+
+AuraRA empowers healthcare professionals and researchers by providing a reliable tool for early RA detection and personalized risk management. 
+
+By combining cutting-edge machine learning with comprehensive health survey data, our product acts as an intelligent decision-support system. It automatically evaluates clinical inputs and enforces strict biological constraints using "BioMatic Logic"—ensuring that predictions are not only accurate but also clinically meaningful and logically sound.
+
+### Key Features
+- **Predictive Risk Modeling**: Leverages models trained on NHANES (National Health and Nutrition Examination Survey) data.
+- **Clinically Validated Logic**: Employs "BioMatic Logic" to cross-check inputs and enforce health rules.
+- **Secure, Local-First Architecture**: Features encrypted data storage to handle sensitive clinical data safely.
+- **Modern Dashboard**: A streamlined, interactive user interface for seamless clinical data entry and risk visualization.
+
+## 🖼️ Product Screenshots
+
+<div align="center">
+  <img src="./homepage.png" alt="Homepage" width="45%" />
+  <img src="./quantitive.png" alt="Quantitative Analysis" width="45%" />
+  <p><em>Figure 1: Main clinical dashboard overview (left) and Detailed symptoms records Analysis (right).</em></p>
+</div>
+
+---
 
 ## System Architecture
 

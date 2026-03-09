@@ -50,3 +50,4 @@ frontend/build.log
 # Project specific
 data/
 .pytest_cache/
+Pitch-keynote.key
